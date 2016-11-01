@@ -22,9 +22,9 @@ int main() {
     window.create(sf::VideoMode(1600, 900), "Enigo's Music Visualizer");
 
     sf::InputSoundFile mySound;
-    mySound.openFromFile("nice_music.ogg");
+    mySound.openFromFile("puzzle_loop.wav");
     std::vector<sf::Int16> sampleStorage;
-
+    
     //Loading the by seconds sound information
     for (float i = 0; i < mySound.getDuration().asSeconds(); i++) {
         mySound.seek(sf::Time(sf::seconds(1+i)));
@@ -32,14 +32,14 @@ int main() {
         if (mySound.read(&sample, 1) < 1) {
             std::fprintf(stderr,"Did not read the correct sample size\n");
             
-            return -1;
+            //return -1;
         }
         sampleStorage.push_back(sample);
     }
 
     //Playing music information
     sf::Music sound;
-    sound.openFromFile("nice_music.ogg");
+    sound.openFromFile("puzzle_loop.wav");
     sound.play();
     sound.setLoop(true);
 
