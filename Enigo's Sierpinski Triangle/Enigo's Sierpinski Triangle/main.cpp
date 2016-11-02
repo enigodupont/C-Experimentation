@@ -11,19 +11,26 @@ Music Visualizer, it utilizes SFML and SFGUI to play music with a visualization.
 #include <SFML/OpenGL.hpp>
 
 sf::Vector2f recursiveSTriangle(sf::Vector2f startPoint, sf::VertexArray &triStorage, sf::Vector2u max, float triangleSize = 10, bool drawLeft = true,bool drawRight = true);
-
+void chaosGame(sf::VertexArray startTriangle, sf::VertexArray &toDraw);
 int main() {
 
     sf::RenderWindow window;
-    window.create(sf::VideoMode(1600, 900), "Enigo's Sierpinski Triangle");
+    window.create(sf::VideoMode(300, 300), "Enigo's Sierpinski Triangle");
 
 
 
-    sf::VertexArray myTriangles(sf::Triangles);
+    sf::VertexArray myTriangles(sf::Lines);
     sf::Vector2f start(window.getSize().x / 2, 0);
 
-    recursiveSTriangle(start,myTriangles,window.getSize(),100);
+    //recursiveSTriangle(start,myTriangles,window.getSize(),100);
+
+    sf::VertexArray startTriangle;
     
+    startTriangle.append(sf::Vector2f(window.getSize().x / 2, 0));
+    startTriangle.append(sf::Vector2f(0,window.getSize().y));
+    startTriangle.append(sf::Vector2f(window.getSize().x, window.getSize().y));
+    
+    chaosGame(startTriangle,myTriangles);
 
     //Render loop
     while (window.isOpen()) {
@@ -44,27 +51,38 @@ int main() {
         }
 
         window.clear();
-        window.draw(myTriangles);
+        
+        for (int i = 0; i < myTriangles.getVertexCount(); i++) {
+            sf::RectangleShape currentSquare;
+            currentSquare.setPosition(myTriangles[i].position);
+            currentSquare.setFillColor(myTriangles[i].color);
+            currentSquare.setSize(sf::Vector2f(10,10));
+            window.draw(currentSquare);
+        }
+        //window.draw(myTriangles);
         window.display();
 
     }
     return 0;
 }
 
-void chaosGame(sf::VertexArray startTriangle, sf::VertexArray toDraw, sf::VertexArray &triStorage) {
+void chaosGame(sf::VertexArray startTriangle, sf::VertexArray &toDraw) {
 
     
-    sf::Vector2f currentPoint(startTriangle[0].position.x,startTriangle[0].position.y + 10);
+    sf::Vector2f currentPoint(startTriangle[0].position.x,startTriangle[0].position.y + 50);
 
-    for (int i = 0; i < 100000000; i++) {
-        std::srand(std::time(nullptr));
-        sf::Vertex endPoint = startTriangle[std::rand() % 3];
+    for (int i = 0; i < 10000; i++) {
+        std::srand(std::time(nullptr) + i + currentPoint.x * currentPoint.y);
+        sf::Vertex endPoint = startTriangle[(std::rand() + i) % 3];
 
 
         //Update currentPosition with midpoint
+        currentPoint = sf::Vector2f((currentPoint.x + endPoint.position.x) / 2, (currentPoint.y + endPoint.position.y) / 2);
 
+        sf::Vertex toAdd(currentPoint);
+        toAdd.color = sf::Color::Red;
         //Add to draw array
-        toDraw.append(currentPoint);
+        toDraw.append(toAdd);
     }
 
     
