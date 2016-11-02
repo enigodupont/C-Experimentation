@@ -10,7 +10,7 @@ Music Visualizer, it utilizes SFML and SFGUI to play music with a visualization.
 #include <SFML/Audio.hpp>
 #include <SFML/OpenGL.hpp>
 
-sf::Vector2f recursiveSTriangle(sf::Vector2f startPoint, sf::VertexArray &triStorage, sf::Vector2u max, float triangleSize = 10, bool drawLeft = true,bool drawRight = true);
+sf::Vector2f recursiveSTriangle(sf::Vector2f startPoint, sf::VertexArray &triStorage, sf::Vector2u max, float triangleSize = 10, bool drawLeft = true, bool drawRight = true);
 void chaosGame(sf::VertexArray startTriangle, sf::VertexArray &toDraw);
 int main() {
 
@@ -25,12 +25,12 @@ int main() {
     //recursiveSTriangle(start,myTriangles,window.getSize(),100);
 
     sf::VertexArray startTriangle;
-    
+
     startTriangle.append(sf::Vector2f(window.getSize().x / 2, 0));
-    startTriangle.append(sf::Vector2f(0,window.getSize().y));
+    startTriangle.append(sf::Vector2f(0, window.getSize().y));
     startTriangle.append(sf::Vector2f(window.getSize().x, window.getSize().y));
-    
-    chaosGame(startTriangle,myTriangles);
+
+    chaosGame(startTriangle, myTriangles);
 
     //Render loop
     while (window.isOpen()) {
@@ -51,12 +51,12 @@ int main() {
         }
 
         window.clear();
-        
+
         for (int i = 0; i < myTriangles.getVertexCount(); i++) {
             sf::RectangleShape currentSquare;
             currentSquare.setPosition(myTriangles[i].position);
             currentSquare.setFillColor(myTriangles[i].color);
-            currentSquare.setSize(sf::Vector2f(10,10));
+            currentSquare.setSize(sf::Vector2f(10, 10));
             window.draw(currentSquare);
         }
         //window.draw(myTriangles);
@@ -68,8 +68,7 @@ int main() {
 
 void chaosGame(sf::VertexArray startTriangle, sf::VertexArray &toDraw) {
 
-    
-    sf::Vector2f currentPoint(startTriangle[0].position.x,startTriangle[0].position.y + 50);
+    sf::Vector2f currentPoint(startTriangle[0].position.x, startTriangle[0].position.y + 50);
 
     for (int i = 0; i < 10000; i++) {
         std::srand(std::time(nullptr) + i + currentPoint.x * currentPoint.y);
@@ -85,11 +84,11 @@ void chaosGame(sf::VertexArray startTriangle, sf::VertexArray &toDraw) {
         toDraw.append(toAdd);
     }
 
-    
+
 }
 
 sf::Vector2f recursiveSTriangle(sf::Vector2f startPoint, sf::VertexArray &triStorage, sf::Vector2u max, float triangleSize, bool drawLeft, bool drawRight) {
-    
+
     if (std::ceil(startPoint.y) > max.y | std::ceil(startPoint.x) < 0 | std::ceil(startPoint.x) > max.x) {
         return startPoint;
     }
@@ -97,7 +96,8 @@ sf::Vector2f recursiveSTriangle(sf::Vector2f startPoint, sf::VertexArray &triSto
     if (drawLeft) {
         leftPoint = recursiveSTriangle(sf::Vector2f(startPoint.x - (triangleSize / 2), startPoint.y + triangleSize), triStorage, max, triangleSize, drawLeft, !drawRight);
 
-    }else{
+    }
+    else {
         leftPoint = sf::Vector2f(startPoint.x - (triangleSize / 2), startPoint.y + triangleSize);
     }
     sf::Vector2f rightPoint;
@@ -107,7 +107,7 @@ sf::Vector2f recursiveSTriangle(sf::Vector2f startPoint, sf::VertexArray &triSto
     else {
         rightPoint = sf::Vector2f(startPoint.x + (triangleSize / 2), startPoint.y + triangleSize);
     }
-    
+
 
     triStorage.append(startPoint);
     triStorage.append(leftPoint);
