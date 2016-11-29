@@ -1,7 +1,7 @@
 /**
 @author Juan Carlos Ramirez
 
-Music Visualizer, it utilizes SFML and SFGUI to play music with a visualization.
+Sierpinski Triangle, utilizes chaotic number generation to create the triangle.
 */
 #include <SFGUI/SFGUI.hpp>
 #include <SFGUI/Widgets.hpp>
