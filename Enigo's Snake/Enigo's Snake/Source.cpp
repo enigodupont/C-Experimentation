@@ -29,45 +29,51 @@ int main() {
     //Render loop
     while (window.isOpen()) {
         sf::Event e;
-        while (window.pollEvent(e)) {
-            switch (e.type) {
-            case sf::Event::Closed:
-                window.close();
-                break;
 
-            case sf::Event::EventType::KeyPressed:
-                switch (e.key.code) {
-                case sf::Keyboard::Escape:
-                    window.close();
-                    break;
-                case sf::Keyboard::Up:
-                    if (!mySnake.moveSnake(up)) {
-                        return 0;
-                    }
-                    break;
-                case sf::Keyboard::Down:
-                    if (!mySnake.moveSnake(down)) {
-                        return 0;
-                    }
-                    break;
-                case sf::Keyboard::Left:
-                    if (!mySnake.moveSnake(left)) {
-                        return 0;
-                    }
-                    break;
-                case sf::Keyboard::Right:
-                    if (!mySnake.moveSnake(right)) {
-                        return 0;
-                    }
-                    break;
-                case sf::Keyboard::R:
-                    //Random Colors
-                    break;
-                }
-                case sf::Keyboard::Space:
-                    //Super Speed
-                    break;
-                }
+		srand(time(NULL));
+		sf::Color newColor = sf::Color(rand() % 255, rand() % 255, rand() % 255);
+        while (window.pollEvent(e)) {
+			switch (e.type) {
+			case sf::Event::Closed:
+				window.close();
+				break;
+
+			case sf::Event::EventType::KeyPressed:
+				switch (e.key.code) {
+				case sf::Keyboard::Escape:
+					window.close();
+					break;
+				case sf::Keyboard::Up:
+					if (!mySnake.moveSnake(up)) {
+						return 0;
+					}
+					break;
+				case sf::Keyboard::Down:
+					if (!mySnake.moveSnake(down)) {
+						return 0;
+					}
+					break;
+				case sf::Keyboard::Left:
+					if (!mySnake.moveSnake(left)) {
+						return 0;
+					}
+					break;
+				case sf::Keyboard::Right:
+					if (!mySnake.moveSnake(right)) {
+						return 0;
+					}
+					break;
+				case sf::Keyboard::R:
+					//Random Colors
+					snakePiece.setFillColor(newColor);
+					mySnake.setSnakeColor(newColor);
+					break;
+				case sf::Keyboard::Space:
+					//Super Speed
+					mySnake.setSnakeSpeed(.08);
+					break;
+				}
+			}
         }
 
         window.clear();
